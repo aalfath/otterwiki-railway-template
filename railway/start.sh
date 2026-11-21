@@ -2,10 +2,13 @@
 # Runs after the upstream entrypoint (as root, /app-data prepared and owned by www-data).
 set -uo pipefail
 
-# Use Railway's forwarded scheme for the app (see Dockerfile).
 SITE=/etc/nginx/sites-enabled/default
 if ! grep -q railway_scheme "$SITE"; then
+    # Use Railway's forwarded scheme for the app (see Dockerfile).
     sed -i 's|include uwsgi_params;|include uwsgi_params;\n        uwsgi_param UWSGI_SCHEME $railway_scheme;|' "$SITE"
+    # Railway's health check path can't contain "/-/": serve the app's
+    # /-/healthz (storage and database check) as /healthz too.
+    sed -i 's|    location / {|    location = /healthz {\n        rewrite ^ /-/healthz last;\n    }\n    location / {|' "$SITE"
 fi
 nginx -t -q || exit 1
 

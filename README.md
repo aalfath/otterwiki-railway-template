@@ -19,7 +19,7 @@ The wiki starts **private**: reading, editing and attachments need an approved a
 
 1. Open the service's public URL. You land on the login page.
 2. Log in with the email `admin@YOUR-RAILWAY-DOMAIN` (the `OTTERWIKI_ADMIN_EMAIL` value) and the password in `OTTERWIKI_ADMIN_PASSWORD`. Both are on the service's **Variables** tab.
-3. Under **Settings → Account** (top right), change your name and password. As admin, under **Settings → User Management**, set your real email address and add users.
+3. Under **Settings** (top right), change your name and password. Under **Settings → User Management**, set your real email address on your account and add users.
 4. Under **Settings → Permissions and Registration**, decide who may read, edit and upload, and whether people may register. For example, make the wiki readable by anyone but editable only by approved users.
 
 The two admin variables are used only while there is no admin account. After the first boot, changing them does nothing. Manage accounts in the wiki itself.

@@ -19,8 +19,10 @@ with app.app_context():
     email = os.environ.get("OTTERWIKI_ADMIN_EMAIL", "").strip().lower()
     password = os.environ.get("OTTERWIKI_ADMIN_PASSWORD", "")
     minlen = int(app.config.get("PASSWORD_MIN_LENGTH", 8))
-    if not is_valid_email(email):
-        sys.exit("railway: OTTERWIKI_ADMIN_EMAIL is missing or not a valid email address")
+    if not is_valid_email(email) or email.endswith("@"):
+        # e.g. the template default admin@${{RAILWAY_PUBLIC_DOMAIN}} with no domain yet
+        print(f"railway: OTTERWIKI_ADMIN_EMAIL {email!r} is not a valid address, using admin@otterwiki.local", file=sys.stderr)
+        email = "admin@otterwiki.local"
     if len(password) < minlen:
         sys.exit(f"railway: OTTERWIKI_ADMIN_PASSWORD must be at least {minlen} characters")
     user = User.query.filter_by(email=email).first()
